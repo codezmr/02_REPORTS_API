@@ -1,6 +1,11 @@
 spring:
   datasource:
-    driver-class-name: org.h2.Driver
-    username: codezmr
-    url: jdbc:h2:mem:testdb
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    url: jdbc:mysql://localhost:3306/JRTP21DB
     password: codezmr
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    
