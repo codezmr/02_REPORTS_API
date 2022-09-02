@@ -1,5 +1,8 @@
 package com.codezmr.response;
 
+import lombok.Data;
+
+@Data
 public class SearchResponse {
 	
 	private String name;
@@ -7,6 +10,4 @@ public class SearchResponse {
 	private String email;
 	private Character gender;
 	private Long ssn;
-	private String planName;
-	private String planStatus;
 }

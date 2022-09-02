@@ -15,7 +15,6 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "ELIGIBILITY_DTLS")
 public class EligibilityDetails {
 
 	@Id
@@ -29,7 +28,7 @@ public class EligibilityDetails {
 	private String planName;
 	private String planStatus;
 	private LocalDate planStartDate;
-	private LocalDate planEndtDate;
+	private LocalDate planEndDate;
 
 	@Column(updatable = false )
 	@CreationTimestamp
