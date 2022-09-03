@@ -60,6 +60,29 @@ public class AppRunner implements ApplicationRunner {
 		entity4.setPlanName("CCAP");
 		entity4.setPlanStatus("Approved");
 		repo.save(entity4);
+		
+		EligibilityDetails entity5 = new EligibilityDetails();
+		entity5.setEligId(5);
+		entity5.setName("Zamir ZMR");
+		entity5.setEmail("zmr@code.in");
+		entity5.setMobile(8340384126L);
+		entity5.setGender('M');
+		entity5.setSsn(65233L);
+		entity5.setPlanName("CCAP");
+		entity5.setPlanStatus("Approved");
+		repo.save(entity5);
+		
+		EligibilityDetails entity6 = new EligibilityDetails();
+		entity6.setEligId(6);
+		entity6.setName("Arman");
+		entity6.setEmail("arman@codezmr.in");
+		entity6.setMobile(9693423562L);
+		entity6.setGender('F');
+		entity6.setSsn(88662L);
+		entity6.setPlanName("CCAP");
+		entity6.setPlanStatus("Denied");
+		repo.save(entity6);
+
 
 	}
 

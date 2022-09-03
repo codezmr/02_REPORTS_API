@@ -38,7 +38,10 @@ public class ReportsServiceImpl implements ReportsService {
 
 	@Autowired
 	EligibilityDetailsRepo eligRepo;
-
+	
+	@Autowired
+	SearchRequest filterRequest;
+	
 	@Override
 	public List<String> getUniqePlanNames() {
 		return eligRepo.findPlanNames();
@@ -53,34 +56,13 @@ public class ReportsServiceImpl implements ReportsService {
 	@Override
 	public List<SearchResponse> search(SearchRequest request) {
 
-		// Create query dynamically
 
-		EligibilityDetails queryBuilder = new EligibilityDetails();
-
-		String planName = request.getPlanName();
-		if (planName != null && planName.equals(""))
-			queryBuilder.setPlanName(planName);
-
-		String planStatus = request.getPlanStatus();
-		if (planName != null && planName.equals(""))
-			queryBuilder.setPlanStatus(planStatus);
-
-		LocalDate planStartDate = request.getPlanStartDate();
-		if (planStartDate != null) {
-			queryBuilder.setPlanStartDate(planStartDate);
-		}
-
-		LocalDate planEndDate = request.getPlanEndDate();
-		if (planStartDate != null) {
-			queryBuilder.setPlanEndDate(planEndDate);
-		}
-
-		Example<EligibilityDetails> example = Example.of(queryBuilder);
-
+		 filterRequest = request;
+		
 		List<SearchResponse> response = new ArrayList<>();
 
-		List<EligibilityDetails> entities = eligRepo.findAll(example); // if example == null, then findAll will retrieve
-																		// all the data.
+		List<EligibilityDetails> entities = eligRepo.findAll(filterSearch()); // if example == null, then findAll will retrieve
+																						// all the data.
 
 		for (EligibilityDetails entity : entities) {
 
@@ -92,10 +74,44 @@ public class ReportsServiceImpl implements ReportsService {
 		return response;
 	}
 
+	private Example<EligibilityDetails> filterSearch(){
+		EligibilityDetails queryBuilder = new EligibilityDetails();
+		
+
+		String planName = filterRequest.getPlanName();
+		if (planName != null && !planName.equals("")) {
+			queryBuilder.setPlanName(planName);
+		}
+			
+
+		String planStatus = filterRequest.getPlanStatus();
+		if (planStatus != null && !planStatus.equals("")) {
+			queryBuilder.setPlanStatus(planStatus);
+		}
+			
+
+		LocalDate planStartDate = filterRequest.getPlanStartDate();
+		if (planStartDate != null) {
+			queryBuilder.setPlanStartDate(planStartDate);
+		}
+
+		LocalDate planEndDate = filterRequest.getPlanEndDate();
+		if (planEndDate != null) {
+			queryBuilder.setPlanEndDate(planEndDate);
+		}
+
+		Example<EligibilityDetails> example = Example.of(queryBuilder);
+
+		
+		return example;
+		
+	}
+	
+	
 	@Override
 	public void genrateExcel(HttpServletResponse response) throws Exception {
 
-		List<EligibilityDetails> entities = eligRepo.findAll();
+		List<EligibilityDetails> entities = eligRepo.findAll(filterSearch());
 
 		HSSFWorkbook workbook = new HSSFWorkbook();
 		HSSFSheet sheet = workbook.createSheet();
@@ -109,7 +125,7 @@ public class ReportsServiceImpl implements ReportsService {
 
 		int col = 1;
 		for (EligibilityDetails entity : entities) {
-			System.out.println(entities.get(col-1));
+			
 			HSSFRow dataRow = sheet.createRow(col);
 			dataRow.createCell(0).setCellValue(entity.getName());
 			dataRow.createCell(1).setCellValue(entity.getEmail());
@@ -129,7 +145,7 @@ public class ReportsServiceImpl implements ReportsService {
 
 	@Override
 	public void genratePdf(HttpServletResponse response) throws Exception {
-		List<EligibilityDetails> entities = eligRepo.findAll();
+		List<EligibilityDetails> entities = eligRepo.findAll(filterSearch());
 
 		Document documnet = new Document(PageSize.A4);
 
