@@ -102,20 +102,20 @@ public class ReportsServiceImpl implements ReportsService {
 		HSSFRow headerRow = sheet.createRow(0);
 
 		headerRow.createCell(0).setCellValue("Name");
-		headerRow.createCell(0).setCellValue("Email");
-		headerRow.createCell(0).setCellValue("Mobile");
-		headerRow.createCell(0).setCellValue("Gender");
-		headerRow.createCell(0).setCellValue("SSN");
+		headerRow.createCell(1).setCellValue("Email");
+		headerRow.createCell(2).setCellValue("Mobile");
+		headerRow.createCell(3).setCellValue("Gender");
+		headerRow.createCell(4).setCellValue("SSN");
 
 		int col = 1;
 		for (EligibilityDetails entity : entities) {
-
+			System.out.println(entities.get(col-1));
 			HSSFRow dataRow = sheet.createRow(col);
 			dataRow.createCell(0).setCellValue(entity.getName());
-			dataRow.createCell(2).setCellValue(entity.getEmail());
-			dataRow.createCell(3).setCellValue(String.valueOf(entity.getMobile()));
-			dataRow.createCell(4).setCellValue(String.valueOf(entity.getGender()));
-			dataRow.createCell(5).setCellValue(String.valueOf(entity.getSsn()));
+			dataRow.createCell(1).setCellValue(entity.getEmail());
+			dataRow.createCell(2).setCellValue(String.valueOf(entity.getMobile()));
+			dataRow.createCell(3).setCellValue(String.valueOf(entity.getGender()));
+			dataRow.createCell(4).setCellValue(String.valueOf(entity.getSsn()));
 
 			col++;
 		}

@@ -18,7 +18,6 @@ import lombok.Data;
 public class EligibilityDetails {
 
 	@Id
-	@GeneratedValue
 	private Integer eligId;
 	private String name;
 	private Long mobile;
