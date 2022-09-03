@@ -15,6 +15,6 @@ public interface ReportsService {
 	
 	public List<SearchResponse> search(SearchRequest request);
 	
-	public void genrateExcel(HttpServletResponse response);
-	public void genratePdf(HttpServletResponse response);
+	public void genrateExcel(HttpServletResponse response) throws Exception;
+	public void genratePdf(HttpServletResponse response) throws Exception;
 }
