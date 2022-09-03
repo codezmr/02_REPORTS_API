@@ -80,7 +80,11 @@ public class ReportRestController {
 		service.genratePdf(response);
 	}
 	
-	
+	@GetMapping("/clearSearch")
+	public void clearFillters() {
+		service.clearSearch();
+		
+	}
 	
 	
 	

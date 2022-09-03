@@ -14,6 +14,7 @@ public interface ReportsService {
 	public List<String> getUniqePlanStatuses();
 	
 	public List<SearchResponse> search(SearchRequest request);
+	public void clearSearch();
 	
 	public void genrateExcel(HttpServletResponse response) throws Exception;
 	public void genratePdf(HttpServletResponse response) throws Exception;

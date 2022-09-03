@@ -38,10 +38,10 @@ public class ReportsServiceImpl implements ReportsService {
 
 	@Autowired
 	EligibilityDetailsRepo eligRepo;
-	
+
 	@Autowired
 	SearchRequest filterRequest;
-	
+
 	@Override
 	public List<String> getUniqePlanNames() {
 		return eligRepo.findPlanNames();
@@ -56,13 +56,13 @@ public class ReportsServiceImpl implements ReportsService {
 	@Override
 	public List<SearchResponse> search(SearchRequest request) {
 
+		filterRequest = request;
 
-		 filterRequest = request;
-		
 		List<SearchResponse> response = new ArrayList<>();
 
-		List<EligibilityDetails> entities = eligRepo.findAll(filterSearch()); // if example == null, then findAll will retrieve
-																						// all the data.
+		List<EligibilityDetails> entities = eligRepo.findAll(filterSearch()); // if example == null, then findAll will
+																				// retrieve
+																				// all the data.
 
 		for (EligibilityDetails entity : entities) {
 
@@ -74,21 +74,18 @@ public class ReportsServiceImpl implements ReportsService {
 		return response;
 	}
 
-	private Example<EligibilityDetails> filterSearch(){
+	private Example<EligibilityDetails> filterSearch() {
 		EligibilityDetails queryBuilder = new EligibilityDetails();
-		
 
 		String planName = filterRequest.getPlanName();
 		if (planName != null && !planName.equals("")) {
 			queryBuilder.setPlanName(planName);
 		}
-			
 
 		String planStatus = filterRequest.getPlanStatus();
 		if (planStatus != null && !planStatus.equals("")) {
 			queryBuilder.setPlanStatus(planStatus);
 		}
-			
 
 		LocalDate planStartDate = filterRequest.getPlanStartDate();
 		if (planStartDate != null) {
@@ -102,12 +99,10 @@ public class ReportsServiceImpl implements ReportsService {
 
 		Example<EligibilityDetails> example = Example.of(queryBuilder);
 
-		
 		return example;
-		
+
 	}
-	
-	
+
 	@Override
 	public void genrateExcel(HttpServletResponse response) throws Exception {
 
@@ -125,7 +120,7 @@ public class ReportsServiceImpl implements ReportsService {
 
 		int col = 1;
 		for (EligibilityDetails entity : entities) {
-			
+
 			HSSFRow dataRow = sheet.createRow(col);
 			dataRow.createCell(0).setCellValue(entity.getName());
 			dataRow.createCell(1).setCellValue(entity.getEmail());
@@ -135,12 +130,12 @@ public class ReportsServiceImpl implements ReportsService {
 
 			col++;
 		}
-		
+
 		ServletOutputStream outputStream = response.getOutputStream();
 		workbook.write(outputStream);
 		workbook.close();
 		outputStream.close();
-		
+
 	}
 
 	@Override
@@ -184,20 +179,30 @@ public class ReportsServiceImpl implements ReportsService {
 		table.addCell(cell);
 		cell.setPhrase(new Phrase("SSN", font));
 		table.addCell(cell);
-		
-		for(EligibilityDetails entity: entities) {
-			
+
+		for (EligibilityDetails entity : entities) {
+
 			table.addCell(entity.getName());
 			table.addCell(entity.getEmail());
 			table.addCell(String.valueOf(entity.getMobile()));
 			table.addCell(String.valueOf(entity.getGender()));
 			table.addCell(String.valueOf(entity.getSsn()));
-			
+
 		}
 
 		documnet.add(table);
-		
+
 		documnet.close();
+
+	}
+
+	@Override
+	public void clearSearch() {
+
+		filterRequest.setPlanName(null);
+		filterRequest.setPlanStatus(null);
+		filterRequest.setPlanStartDate(null);
+		filterRequest.setPlanEndDate(null);
 
 	}
 
