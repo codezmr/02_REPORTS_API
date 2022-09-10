@@ -203,7 +203,7 @@ public class ReportsServiceImpl implements ReportsService {
 		filterRequest.setPlanStatus(null);
 		filterRequest.setPlanStartDate(null);
 		filterRequest.setPlanEndDate(null);
-
+		
 	}
 
 }
